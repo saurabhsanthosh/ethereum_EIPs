@@ -185,5 +185,7 @@ contract ERC27 is IERC27 , Context {
         return true;
     }
 
+    receive() external  payable {}
+
 
 }

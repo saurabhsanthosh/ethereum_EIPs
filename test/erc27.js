@@ -141,7 +141,7 @@ contract('ERC27', (accounts) => {
 
     });
 
-    it('should be able to remove members from tribe clan', async () => {
+    it('should be able to remove members from erc27 contract', async () => {
         const erc27Instance = await ERC27.at(contract_address);
 
         const _method = web3.eth.abi.encodeFunctionSignature('removeMember(address)')
@@ -160,6 +160,46 @@ contract('ERC27', (accounts) => {
         assert.equal((await erc27Instance.isMember(accounts[8])), true, 'Membership is wrong');
         assert.equal((await erc27Instance.isMember(accounts[7])), false, 'Membership is wrong');
 
+
+    });
+
+    it('should be able to do complex asset distribution in erc27 contract', async () => {
+        const erc27Instance = await ERC27.at(contract_address);
+
+        let balanceofContractBefore = await web3.eth.getBalance(contract_address);
+        await web3.eth.sendTransaction({to : contract_address, from : accounts[4], value : web3.utils.toWei('3', 'ether')})
+        let balanceofContractAfter = await web3.eth.getBalance(contract_address);
+        let expectedbalanceAfter = new web3.utils.BN(balanceofContractBefore).add(new web3.utils.BN(web3.utils.toWei('3', 'ether')));
+
+        assert.equal(balanceofContractAfter, expectedbalanceAfter, 'ETH did not get transferred to contract');
+
+        const _method1 = web3.eth.abi.encodeFunctionSignature('transfer(address,uint256)')
+        const _params1 = web3.eth.abi.encodeParameters(['address', 'uint256'], [accounts[0], web3.utils.toWei('1', 'ether')]);
+
+        const _method2 = web3.eth.abi.encodeFunctionSignature('transfer(address,uint256)')
+        const _params2 = web3.eth.abi.encodeParameters(['address', 'uint256'], [accounts[8], web3.utils.toWei('1', 'ether')]);
+
+        const _method3 = web3.eth.abi.encodeFunctionSignature('transfer(address,uint256)')
+        const _params3 = web3.eth.abi.encodeParameters(['address', 'uint256'], [accounts[9], web3.utils.toWei('1', 'ether')]);
+
+        await erc27Instance.createAction([_method1, _method2, _method3], [_params1, _params2, _params3])
+        await erc27Instance.approveAction(4, true)
+        await erc27Instance.approveAction(4, true, {from : accounts[9]})
+        await erc27Instance.approveAction(4, true, {from : accounts[8]})
+
+        let balanceofAccount0Before = await web3.eth.getBalance(accounts[0]);
+        let balanceofAccount8Before = await web3.eth.getBalance(accounts[8]);
+        let balanceofAccount9Before = await web3.eth.getBalance(accounts[9]);
+
+        await erc27Instance.executeAction(4, {from:accounts[9]})
+
+        let balanceofAcoount0After = await web3.eth.getBalance(accounts[0]);
+        let balanceofAcoount8After = await web3.eth.getBalance(accounts[8]);
+        let balanceofAcoount9After = await web3.eth.getBalance(accounts[9]);
+
+        assert.equal(balanceofAcoount0After, new web3.utils.BN(balanceofAccount0Before).add(new web3.utils.BN(web3.utils.toWei('1', 'ether'))).toString(), 'ETH transfer did not happen');
+        assert.equal(balanceofAcoount8After, new web3.utils.BN(balanceofAccount8Before).add(new web3.utils.BN(web3.utils.toWei('1', 'ether'))).toString(), 'ETH transfer did not happen');
+        assert.equal(balanceofAcoount9After > new web3.utils.BN(balanceofAccount9Before).add(new web3.utils.BN(web3.utils.toWei('0.95', 'ether'))).toString(), true, 'ETH transfer did not happen');
 
     });
 
