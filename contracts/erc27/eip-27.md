@@ -295,7 +295,10 @@ scenarios in efficient and secure manner
 
 #### Example implementations are available at
 
-- [Sample implementation](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/9b3710465583284b8c4c5d2245749246bb2e0094/contracts/token/ERC20/ERC20.sol)
+- [README](https://github.com/saurabhsanthosh/ethereum_EIPs/blob/master/contracts/erc27/eip-27.md)
+- [Interface](https://github.com/saurabhsanthosh/ethereum_EIPs/blob/master/contracts/erc27/IERC27.sol)
+- [Implementation](https://github.com/saurabhsanthosh/ethereum_EIPs/blob/master/contracts/erc27/ERC27.sol)
+- [Extensions](https://github.com/saurabhsanthosh/ethereum_EIPs/tree/master/contracts/erc27)
 
 
 ## History
