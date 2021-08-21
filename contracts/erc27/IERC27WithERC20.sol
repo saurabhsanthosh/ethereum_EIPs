@@ -11,12 +11,13 @@ import "./IERC27.sol";
 interface IERC27WithERC20 is IERC27 {
 
     /**
-     * @dev Transfers `_value` amount of tokens of `_erc20Contract` address to address `_to`.
+     * @dev Transfers `_value` amount of tokens of `_from` address to address `_to`.
+     * For this to happen `_erc20Contract` should either own/approved to transfer the tokens.
      * This method should be public with `onlySelf` modifier and will be executed only if it's approved by the group.
      * (Approval is defined by the `isActionApproved` method)
      *
      */
-    function transferERC20(address _erc20Contract, address _to, uint256 _value) external returns (bool success);
+    function transferERC20(address _erc20Contract, address _from, address _to, uint256 _value) external returns (bool success);
 
     /**
      * @dev Allows `_spender` to withdraw from your group multiple times, up to the `_value` amount.
