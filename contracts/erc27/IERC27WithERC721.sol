@@ -31,6 +31,6 @@ interface IERC27WithERC721 is IERC27 {
      * Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller.
      *
      */
-    function setApprovalForAllERC721(address operator, bool _approved) external;
+    function setApprovalForAllERC721(address operator, bool _approved) external returns (bool success);
 
 }

@@ -202,7 +202,9 @@ function transfer(address _to, uint256 _value) external onlySelf returns (bool s
 
 #### transferERC20
 
-Transfers `_value` amount of tokens of `_erc20Contract` address to address `_to`. This method should be external with `onlySelf` modifier and will be executed only if it's approved by the group. (Approval is defined by the `isActionApproved` method)
+Transfers `_value` amount of tokens of `_from` address to address `_to`.
+For this to happen `_erc20Contract` should either own/approved to transfer the tokens.
+This method should be external with `onlySelf` modifier and will be executed only if it's approved by the group. (Approval is defined by the `isActionApproved` method)
 
 
 
@@ -211,35 +213,7 @@ but interfaces and other contracts MUST NOT expect these values to be present.
 
 
 ``` js
-function transferERC20(address _erc20Contract, address _to, uint256 _value) external onlySelf returns (bool success)
-```
-
-#### transferERC721
-
-Transfers token with id `_tokenid`  of `_erc721Contract` address to address `_to`. This method should be external with `onlySelf` modifier and will be executed only if it's approved by the group. (Approval is defined by the `isActionApproved` method)
-
-
-
-OPTIONAL - This method can be used if the developer wants his/her contracts to have this functionality,
-but interfaces and other contracts MUST NOT expect these values to be present.
-
-
-``` js
-function transferERC721(address _erc721Contract, address _to, uint256 _tokenId) external onlySelf returns (bool success)
-```
-
-#### transferERC721
-
-Transfers token with id `_tokenid`  of `_erc721Contract` address to address `_to`. This method should be external with `onlySelf` modifier and will be executed only if it's approved by the group. (Approval is defined by the `isActionApproved` method)
-
-
-
-OPTIONAL - This method can be used if the developer wants his/her contracts to have this functionality,
-but interfaces and other contracts MUST NOT expect these values to be present.
-
-
-``` js
-function transferERC721(address _erc721Contract, address _to, uint256 _tokenId) external onlySelf returns (bool success)
+function transferERC20(address _erc20Contract, address _from, address _to, uint256 _value) external onlySelf returns (bool success)
 ```
 
 #### approveERC20
@@ -256,6 +230,23 @@ but interfaces and other contracts MUST NOT expect these values to be present.
 function approveERC20(address _erc20Contract, address _spender, uint256 _value) external onlySelf returns (bool success)
 ```
 
+#### transferERC721
+
+Transfers token with id `_tokenid`  of `_from` address to address `_to`.
+For this to happen `_erc721Contract` should either own/approved to transfer the token.
+This method should be external with `onlySelf` modifier and will be executed only if it's approved by the group. (Approval is defined by the `isActionApproved` method)
+
+
+
+OPTIONAL - This method can be used if the developer wants his/her contracts to have this functionality,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+
+``` js
+function transferERC721(address _erc721Contract, address _from, address _to, uint256 _tokenId) external onlySelf returns (bool success)
+```
+
+
 #### approveERC721
 
 Allows `_spender` to withdraw a token with given `_tokenId` from your group. This method should be external with `onlySelf` modifier and will be executed only if it's approved by the group. (Approval is defined by the `isActionApproved` method)
@@ -268,6 +259,14 @@ but interfaces and other contracts MUST NOT expect these values to be present.
 
 ``` js
 function approveERC721(address _erc721Contract, address _spender, uint256 _tokenId) external onlySelf returns (bool success)
+```
+
+### setApprovalForAllERC721
+
+Approve or remove `operator` as an operator for the caller. This method should be external with `onlySelf` modifier and will be executed only if it's approved by the group. (Approval is defined by the `isActionApproved` method)
+
+``` js
+function setApprovalForAllERC721(address operator, bool _approved) external onlySelf returns (bool success)
 ```
 
 We can have any method here we want to execute based on approval. We just have to make sure they are internal and can only be executed
@@ -299,6 +298,7 @@ scenarios in efficient and secure manner
 - [Interface](https://github.com/saurabhsanthosh/ethereum_EIPs/blob/master/contracts/erc27/IERC27.sol)
 - [Implementation](https://github.com/saurabhsanthosh/ethereum_EIPs/blob/master/contracts/erc27/ERC27.sol)
 - [Extensions](https://github.com/saurabhsanthosh/ethereum_EIPs/tree/master/contracts/erc27)
+- [TestCases](https://github.com/saurabhsanthosh/ethereum_EIPs/blob/master/test/erc27.js)
 
 
 ## History
